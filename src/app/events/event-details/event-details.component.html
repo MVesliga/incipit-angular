@@ -1,0 +1,32 @@
+<div class="col-12">
+  <div class="jumbotron">
+    <h1 style="text-align: center">{{event.name}}</h1>
+  </div>
+  <div class="dataWrap">
+    <h4 style="text-align: center">
+      <span><b>Max participants: </b>{{event.maxParticipants}}</span> |
+      <span><b>Start date: </b>{{event.startDate}}</span> |
+      <span><b>End date: </b>{{event.endDate}}</span>
+    </h4>
+    <hr />
+    <h4 style="text-align: center">
+      <span><b>Registrations Not Before: </b>{{event.registrationsNotBefore}}</span> |
+      <span><b>Registrations Not After: </b>{{event.registrationsNotAfter}}</span> |
+      <span><b>Confirmations Not After: </b>{{event.confirmationsNotAfter}}</span>
+    </h4>
+    <hr />
+    <h4>Teams: </h4>
+    <div *ngFor="let team of event.teams" class="dataWrap">
+      <h4><b>Name: </b>{{team.name}}</h4>
+        <h4><b>Mentors: </b></h4>
+        <div *ngFor="let mentor of team.mentors" class="dataWrap">
+          <h4><b>First Name: </b>{{mentor.name.first}}</h4>
+          <h4><b>Last Name: </b>{{mentor.name.last}}</h4>
+          <h4><b>Email: </b>{{mentor.email}}</h4>
+        </div>
+    </div>
+  </div>
+  <div class="d-inline-block col-5"></div>
+  <button class="btn btn-danger" [routerLink]="['./register']" style="margin-bottom: 2%">Register</button>
+</div>
+

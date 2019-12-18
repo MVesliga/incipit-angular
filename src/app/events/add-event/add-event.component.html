@@ -1,0 +1,138 @@
+<div class="col-12">
+  <h2 style="text-align: center; padding: 2%;">Add Event</h2>
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+    <div formGroupName="eventData">
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="eventName">Event name:</label>
+          <input type="text" id="eventName" class="form-control" formControlName="eventName"/>
+          <span *ngIf="!eventForm.get('eventData.eventName').valid && eventForm.get('eventData.eventName').touched"
+                class="form-text text-muted">Please enter the event name!</span>
+        </div>
+        <div class="form-group col-6">
+          <label for="maxParticipants">Max participants:</label>
+          <input type="number" id="maxParticipants" class="form-control" formControlName="maxParticipants" min="1"
+                 oninput="validity.valid||(value='');"/>
+          <span
+            *ngIf="!eventForm.get('eventData.maxParticipants').valid && eventForm.get('eventData.maxParticipants').touched"
+            class="form-text text-muted">Please enter a valid number of max participants! (1 or more)</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="startDate">Start Date:</label>
+          <input id="startDate" [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1" class="form-control"
+                 formControlName="startDate">
+          <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+          <span *ngIf="!eventForm.get('eventData.startDate').valid && eventForm.get('eventData.startDate').touched"
+                class="form-text text-muted">
+            <span *ngIf="eventForm.get('eventData.startDate').errors['dateIsBeforeError']">Selected date can't be before or todays date!</span>
+            Please enter the event start date!</span>
+        </div>
+        <div class="form-group col-6">
+          <label for="endDate">Start Date:</label>
+          <input id="endDate" [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" class="form-control"
+                 formControlName="endDate">
+          <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+          <span *ngIf="!eventForm.get('eventData.endDate').valid && eventForm.get('eventData.endDate').touched"
+                class="form-text text-muted">
+             <span *ngIf="eventForm.get('eventData.endDate').errors['dateIsBeforeError']">Selected date can't be before or todays date!</span>
+            Please enter the event end date!</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="registrationsNotBefore">Registrations Not Before:</label>
+          <input id="registrationsNotBefore" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" class="form-control" formControlName="registrationsNotBefore">
+          <owl-date-time #dt3></owl-date-time>
+          <span
+            *ngIf="!eventForm.get('eventData.registrationsNotBefore').valid && eventForm.get('eventData.registrationsNotBefore').touched"
+            class="form-text text-muted">
+              <span *ngIf="eventForm.get('eventData.registrationsNotBefore').errors['dateIsBeforeError']">Selected date can't be before or todays date!</span>
+             Please enter the date before which the event doesn't accept registrations!</span>
+        </div>
+        <div class="form-group col-6">
+          <label for="registrationsNotAfter">Registrations Not After:</label>
+          <input id="registrationsNotAfter" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" class="form-control"
+                 formControlName="registrationsNotAfter">
+          <owl-date-time #dt4></owl-date-time>
+          <span
+            *ngIf="!eventForm.get('eventData.registrationsNotAfter').valid && eventForm.get('eventData.registrationsNotAfter').touched"
+            class="form-text text-muted">
+             <span *ngIf="eventForm.get('eventData.registrationsNotAfter').errors['dateIsBeforeError']">Selected date can't be before or todays date!</span>
+            Please enter the date after which the event doesn't accept registrations!</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label for="confirmationsNotAfter">Confirmations Not After:</label>
+          <input id="confirmationsNotAfter" [owlDateTimeTrigger]="dt5" [owlDateTime]="dt5" class="form-control"
+                 formControlName="confirmationsNotAfter">
+          <owl-date-time #dt5></owl-date-time>
+          <span
+            *ngIf="!eventForm.get('eventData.confirmationsNotAfter').valid && eventForm.get('eventData.confirmationsNotAfter').touched"
+            class="form-text text-muted">
+             <span *ngIf="eventForm.get('eventData.confirmationsNotAfter').errors['dateIsBeforeError']">Selected date can't be before or todays date!</span>
+            Please enter the date after which the event doesn't accept participation confirmations!</span>
+        </div>
+      </div>
+    </div>
+    <hr/>
+    <div formGroupName="teamsData">
+      <div formArrayName="teams">
+        <h4 class="d-inline-block col-11" style="padding-left: 0px">Teams</h4>
+        <button class="btn actionBtn" type="button" (click)="onAddTeam()"><i class="fas fa-plus"></i></button>
+        <br/><br/>
+        <div class="form-group" *ngFor="let teamControl of teams; let teamIndex = index"
+             style="border: 1px solid black; padding: 5%; border-radius: 10px">
+          <h4 class="d-inline-block col-11">New Team: </h4>
+          <button class="btn actionBtn" type="button" (click)="onRemoveTeam(teamIndex)"><i
+            class="fas fa-minus"></i></button>
+          <div [formGroupName]="teamIndex">
+            <label>Team Name</label>
+            <input type="text" class="form-control" formControlName="name">
+            <span *ngIf="!getTeam(teamIndex).get('name').valid && getTeam(teamIndex).get('name').touched"
+                  class="form-text text-muted">Please enter the team name!</span>
+            <div formArrayName="mentors">
+              <hr/>
+              <h4 class="d-inline-block col-11">Mentors</h4>
+              <button class="btn actionBtn" type="button" (click)="onAddMentor(teamIndex)"><i
+                class="fas fa-plus"></i></button>
+              <br/><br/>
+              <div class="form-group" *ngFor="let mentorControl of getMentors(teamIndex); let mentorIndex = index"
+                   style="margin-left: 10%; border: 1px solid black; padding: 5%; border-radius: 10px">
+                <h4 class="d-inline-block col-11">New Mentor: </h4>
+                <button class="btn actionBtn" type="button" (click)="onRemoveMentor(teamIndex, mentorIndex)"><i
+                  class="fas fa-minus"></i></button>
+
+                <div [formGroupName]="mentorIndex">
+                  <div formGroupName="name">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" formControlName="first">
+                    <span
+                      *ngIf="!getMentor(teamIndex, mentorIndex).get('name.first').valid && getMentor(teamIndex, mentorIndex).get('name.first').touched"
+                      class="form-text text-muted">Please enter mentors first name!</span>
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" formControlName="last">
+                    <span
+                      *ngIf="!getMentor(teamIndex, mentorIndex).get('name.last').valid && getMentor(teamIndex, mentorIndex).get('name.last').touched"
+                      class="form-text text-muted">Please enter mentors last name!</span>
+                  </div>
+                  <label>Email</label>
+                  <input type="text" class="form-control" formControlName="email">
+                  <span
+                    *ngIf="!getMentor(teamIndex, mentorIndex).get('email').valid && getMentor(teamIndex, mentorIndex).get('email').touched"
+                    class="form-text text-muted">Please enter mentors email!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr/>
+    <span *ngIf="!eventForm.valid" class="form-text text-muted">Please enter all required event data!</span>
+    <div class="d-inline-block col-5"></div>
+    <button class="btn actionBtn" type="submit" style="margin: 2% 0 2% 0" [disabled]="!eventForm.valid">Submit</button>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" routerLink="home"><img src="assets/images/logo_mag.png" alt="logo" height="60px"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="home">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="about">About</a>
+      </li>
+      <li class="dropdown" style="cursor: pointer" appDropdown>
+        <a class="nav-link dropdown-toggle" role="button">Events <span class="caret"></span></a>
+        <ul class="dropdown-menu" style="padding: 5%">
+          <li><a routerLink="events/show">Show events</a></li>
+          <hr>
+          <li><a routerLink="events/add">Add event</a></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item " *ngIf="!kcService.isAuthenticated()">
+        <a class="nav-link" (click)="onLogin()" style="cursor: pointer">Login</a>
+      </li>
+      <li class="nav-item " *ngIf="kcService.isAuthenticated()">
+        <a class="nav-link" (click)="onLogout()" style="cursor: pointer">Logout</a>
+      </li>
+    </ul>
+    <p style="margin-top: 1%" *ngIf="profile.username">| Logged in as: <b>{{profile.username}}</b></p>
+  </div>
+
+
+</nav>
+
+

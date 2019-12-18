@@ -1,0 +1,136 @@
+<div class="col-12">
+  <h2 style="padding: 3%; text-align: center;">Register for <b>{{event.name}}</b></h2>
+  <form [formGroup]="eventRegisterForm" (ngSubmit)="onSubmit()">
+    <div formGroupName="personal">
+      <h3>Personal</h3>
+      <hr/>
+      <div formGroupName="name">
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" class="form-control" formControlName="first"/>
+            <span
+              *ngIf="!eventRegisterForm.get('personal.name.first').valid && eventRegisterForm.get('personal.name.first').touched"
+              class="form-text text-muted">Please enter your first name!</span>
+          </div>
+          <div class="form-group col-6">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" class="form-control" formControlName="last">
+            <span
+              *ngIf="!eventRegisterForm.get('personal.name.last').valid && eventRegisterForm.get('personal.name.last').touched"
+              class="form-text text-muted">Please enter your last name!</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="email">Email:</label>
+          <input type="email" id="email" class="form-control" formControlName="email">
+          <span
+            *ngIf="!eventRegisterForm.get('personal.email').valid && eventRegisterForm.get('personal.email').touched"
+            class="form-text text-muted">Please enter your email!</span>
+        </div>
+        <div class="form-group col-6">
+          <label for="phone">Phone:</label>
+          <input type="text" id="phone" class="form-control" formControlName="phone"/>
+          <span
+            *ngIf="!eventRegisterForm.get('personal.phone').valid && eventRegisterForm.get('personal.phone').touched"
+            class="form-text text-muted">Please enter your phone number!</span>
+        </div>
+      </div>
+      <div formGroupName="education">
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="faculty">Faculty:</label>
+            <input type="text" id="faculty" class="form-control" formControlName="faculty">
+            <span
+              *ngIf="!eventRegisterForm.get('personal.education.faculty').valid && eventRegisterForm.get('personal.education.faculty').touched"
+              class="form-text text-muted">Please enter your faculty name!</span>
+          </div>
+          <div class="form-group col-6">
+            <label for="facultyYear">Faculty Year: </label>
+            <input type="number" id="facultyYear" class="form-control" formControlName="facultyYear" min="1" max="5"
+                   oninput="validity.valid||(value='');">
+            <span
+              *ngIf="!eventRegisterForm.get('personal.education.facultyYear').valid && eventRegisterForm.get('personal.education.facultyYear').touched"
+              class="form-text text-muted">Please enter your faculty year!</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label for="personalSummary">Personal Summary:</label>
+          <input type="text" id="personalSummary" class="form-control" formControlName="personalSummary">
+          <span
+            *ngIf="!eventRegisterForm.get('personal.personalSummary').valid && eventRegisterForm.get('personal.personalSummary').touched"
+            class="form-text text-muted">Please enter your personal summary!</span>
+        </div>
+      </div>
+    </div>
+    <div formGroupName="experience">
+      <h3>Experience</h3>
+      <hr/>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="githubUsername">GitHub Username: </label>
+          <input type="text" id="githubUsername" class="form-control" formControlName="githubUsername">
+          <span
+            *ngIf="!eventRegisterForm.get('experience.githubUsername').valid && eventRegisterForm.get('experience.githubUsername').touched"
+            class="form-text text-muted">Please enter your GitHub username!</span>
+        </div>
+        <div class="form-group col-6">
+          <label for="yearsOfExperience">Years Of Experience: </label>
+          <input type="number" id="yearsOfExperience" class="form-control" formControlName="yearsOfExperience" min="0"
+                 oninput="validity.valid||(value='');">
+          <span
+            *ngIf="!eventRegisterForm.get('experience.yearsOfExperience').valid && eventRegisterForm.get('experience.yearsOfExperience').touched"
+            class="form-text text-muted">Please enter your years of experience!</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label for="experienceSummary">Experience Summary: </label>
+          <input type="text" id="experienceSummary" class="form-control" formControlName="experienceSummary">
+          <span
+            *ngIf="!eventRegisterForm.get('experience.experienceSummary').valid && eventRegisterForm.get('experience.experienceSummary').touched"
+            class="form-text text-muted">Please enter your experience summary!</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <div formArrayName="skills">
+            <h4 class="d-inline-block col-1">Skills: </h4>
+            <button class="btn actionBtn" type="button" (click)="onAddSkill()"><i class="fas fa-plus"></i></button>
+            <br><br>
+            <div class="form-group" *ngFor="let skillControl of skills; let skillIndex = index">
+              <div [formGroupName]="skillIndex">
+                <input type="text" class="d-inline-block form-control col-5" formControlName="name">
+                <button class="btn actionBtn" (click)="onRemoveSkill(skillIndex)"><i class="fas fa-minus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-6">
+        <label for="motivation">Motivation: </label>
+        <input type="text" id="motivation" class="form-control" formControlName="motivation">
+        <span *ngIf="!eventRegisterForm.get('motivation').valid && eventRegisterForm.get('motivation').touched"
+              class="form-text text-muted">Please enter your motivation!</span>
+      </div>
+      <div class="form-group col-6">
+        <label for="preferredOS">Preffered OS: </label>
+        <select name="preferredOS" id="preferredOS" class="form-control" formControlName="preferredOS">
+          <option value="WINDOWS">Windows</option>
+          <option value="LINUX">Linux</option>
+          <option value="MACOS">MacOS</option>
+        </select>
+      </div>
+    </div>
+    <span *ngIf="!eventRegisterForm.valid" class="form-text text-muted">Please enter all required data!</span>
+    <div class="d-inline-block col-5"></div>
+    <button class="btn actionBtn" type="submit" style="margin: 2% 0 2% 0" [disabled]="!eventRegisterForm.valid">Submit
+    </button>
+  </form>
+</div>

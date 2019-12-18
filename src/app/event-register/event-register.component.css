@@ -1,0 +1,14 @@
+.actionBtn {
+  border: 1px solid lightgray;
+  background-color: transparent;
+  color: #ff0080;
+}
+
+input.ng-invalid.ng-touched  {
+  border: 1px solid red;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  border-color: red;
+}
