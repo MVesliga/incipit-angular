@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" routerLink="home"><img src="assets/images/logo_mag.png" alt="logo" height="60px"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -13,11 +14,13 @@
         <a class="nav-link" routerLink="about">About</a>
       </li>
       <li class="dropdown" style="cursor: pointer" appDropdown>
-        <a class="nav-link dropdown-toggle" role="button">Events <span class="caret"></span></a>
+        <a class="nav-link dropdown-toggle" role="button">Event <span class="caret"></span></a>
         <ul class="dropdown-menu" style="padding: 5%">
-          <li><a routerLink="events/show">Show events</a></li>
-          <hr>
-          <li><a routerLink="events/add">Add event</a></li>
+          <li><a routerLink="event/show">Show events</a></li>
+          <div *ngIf="userRoles.includes('ADMIN')">
+            <hr>
+            <li><a routerLink="event/add">Add event</a></li>
+          </div>
         </ul>
       </li>
     </ul>

@@ -22,7 +22,7 @@ export class EventRegisterComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.event = this.eventsService.getEvent(params['id']);
-      this.id = params['id'] + 1;
+      this.id = +params['id'] + 1;
     });
 
     this.eventRegisterForm = new FormGroup({

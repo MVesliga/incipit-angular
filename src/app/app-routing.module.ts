@@ -12,16 +12,20 @@ import {AddEventComponent} from './events/add-event/add-event.component';
 import {EventListComponent} from './events/event-list/event-list.component';
 import {CanDeactivateGuard} from './events/add-event/can-deactivate-guard.service';
 import {EventsResolverService} from './events/events-resolver.service';
+import {RegistrationDetailsComponent} from './registrations/registration-details/registration-details.component';
 
 const appRoutes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'about', component: AboutComponent},
-  {path: 'events', children: [
+  {path: 'event', children: [
       {path: 'show', component: EventListComponent},
       {path: 'add', component: AddEventComponent, canActivate: [AuthGuard], canDeactivate: [CanDeactivateGuard]},
-      {path: 'show/:id', component: EventDetailsComponent, resolve: [EventsResolverService]},
-      {path: 'show/:id/register', component: EventRegisterComponent, canActivate: [AuthGuard], resolve: [EventsResolverService]},
+      {path: ':id', resolve: [EventsResolverService], children: [
+          {path: '', component: EventDetailsComponent},
+          {path: 'registrations/:registrationUUID', component: RegistrationDetailsComponent},
+          {path: 'register', component: EventRegisterComponent, canActivate: [AuthGuard], resolve: [EventsResolverService]}
+        ]},
     ]},
   {path: 'not-registered', component: NotRegisteredComponent},
   {path: 'not-found', component: NotFoundComponent},

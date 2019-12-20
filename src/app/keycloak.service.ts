@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import * as Http from 'http';
-import {HttpClient} from '@angular/common/http';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 declare let Keycloak: any;
 
@@ -9,6 +7,7 @@ declare let Keycloak: any;
 export class KeycloakService {
 
   private keycloakAuth: any;
+  private userRoles: [] = [];
 
   init(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -44,6 +43,14 @@ export class KeycloakService {
 
   isAuthenticated() {
     return this.keycloakAuth.authenticated;
+  }
+
+  getUserRoles() {
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(this.getToken());
+    this.userRoles = decodedToken['resource_access'].incipit.roles;
+
+    return this.userRoles;
   }
 
   loadProfile(): Promise<any> {

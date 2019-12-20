@@ -12,12 +12,13 @@ import {Registration} from '../shared/Model/registration.model';
 export class EventsService {
 
   eventsChanged = new Subject<Event[]>();
-  private events: Event[] = [] ;
+  private events: Event[] = [];
   headers = new HttpHeaders({
     'Authorization': 'Bearer ' + localStorage.getItem('token')
   });
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
 
   setEvents(events: Event[]) {
@@ -30,7 +31,7 @@ export class EventsService {
   }
 
   fetchEvents() {
-    return this.http.get<Event[] >('http://localhost:8080/event').pipe(
+    return this.http.get<Event[]>('http://localhost:8080/event').pipe(
       map(events => {
         return events.map(event => {
           return {
@@ -46,9 +47,13 @@ export class EventsService {
   }
 
   createEvent(event: Event) {
-    this.http.post<HttpResponse<any>>('http://localhost:8080/event', event, {headers: this.headers, observe: 'response'}).subscribe((response: HttpResponse<any>) => {
+    this.http.post<HttpResponse<any>>('http://localhost:8080/event', event, {
+      headers: this.headers,
+      observe: 'response'
+    }).subscribe((response: HttpResponse<any>) => {
       this.eventsChanged.next(this.events.slice());
       alert('Event ' + event.name + ' was successfully added!');
+      console.log(response);
       this.router.navigate([response.headers.get('Location')]);
     }, (error: HttpErrorResponse) => {
       console.log(error);
@@ -62,13 +67,21 @@ export class EventsService {
   }
 
   registerForEvent(eventId: number, registration: Registration) {
-    this.http.post('http://localhost:8080/event/' + eventId + '/registrations', registration, {headers: this.headers, observe: 'response'}).subscribe((response: HttpResponse<any>) => {
+    this.http.post<string>('http://localhost:8080/event/' + eventId.toString() + '/registrations', registration, {
+      headers: this.headers,
+      responseType: 'text'
+    }).subscribe(response => {
+      alert('User ' + registration.personal.name.first + ' successfully registered!');
       console.log(response);
+      this.router.navigate([response])
     }, (error: HttpErrorResponse) => {
+      console.log(error);
+      if (error.status === 404) {
+        alert(error.error);
+      }
       if (error.status === 405) {
         alert(error.error);
       }
     });
   }
-
 }

@@ -9,6 +9,7 @@ import {KeycloakService} from './keycloak.service';
 export class AppComponent implements OnInit {
   title = 'incipit-angular';
   private profile: any = {};
+
   constructor(private kcService: KeycloakService) {
   }
 
@@ -17,6 +18,5 @@ export class AppComponent implements OnInit {
       this.profile = user;
       console.log(this.profile);
     });
-
   }
 }

@@ -9,6 +9,7 @@ import {KeycloakService} from '../keycloak.service';
 export class HeaderComponent implements OnInit {
 
   private profile: any = {};
+  private userRoles: [] = [];
 
   constructor(private kcService: KeycloakService) { }
 
@@ -16,6 +17,12 @@ export class HeaderComponent implements OnInit {
     this.kcService.loadProfile().then(user => {
       this.profile = user;
     });
+
+    if (this.kcService.isAuthenticated()) {
+      this.userRoles = this.kcService.getUserRoles();
+    } else {
+      this.userRoles = [];
+    }
   }
 
   onLogin() {
