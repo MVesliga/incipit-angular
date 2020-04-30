@@ -23,7 +23,7 @@
     "@auth0/angular-jwt": "^3.0.1",
     "angular-svg-icon": "^8.0.0",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jwt-decode": "^2.2.0",
     "keycloak-angular": "^7.0.1",
     "keycloak-js": "^7.0.1",
